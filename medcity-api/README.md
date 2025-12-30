@@ -25,6 +25,92 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Technology Stack
+
+This project uses the following technologies and principles to build a robust and scalable REST API for medical appointment booking:
+
+- **NestJS**: A Node.js framework for building efficient and scalable backend applications, based on TypeScript.
+- **TypeScript**: A programming language that adds static typing to JavaScript, improving maintainability and reducing errors.
+- **PostgreSQL**: A relational database management system, used to store user and appointment data.
+- **TypeORM**: An ORM (Object-Relational Mapping) for TypeScript and JavaScript, simplifying database interactions.
+- **Swagger/OpenAPI**: A tool for documenting and interactively testing the API.
+- **Hexagonal Architecture (Ports and Adapters)**: An architectural pattern that separates business logic from external dependencies, promoting testability and maintainability.
+- **Clean Code and SOLID**: Software development principles for writing clean, readable, and modular code, following SOLID principles (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion).
+
+## Project Structure
+
+The project follows a **Hexagonal Architecture** pattern, organizing code into modules with clear separation of concerns:
+
+```
+src/
+├── modules/                          # Feature modules
+│   └── users/                        # User module
+│       ├── domain/                   # Business logic layer (independent of frameworks)
+│       │   ├── entities/             # Domain entities (User entity)
+│       │   ├── repositories/         # Repository interfaces (contracts)
+│       │   └── value-objects/        # Value objects (immutable data)
+│       │
+│       ├── application/              # Application layer (use cases and services)
+│       │   ├── use-cases/            # Application use cases (CreateUserUseCase, GetUsersUseCase)
+│       │   └── services/             # Application services
+│       │
+│       ├── infrastructure/           # Infrastructure layer (external dependencies)
+│       │   └── repositories/         # Repository implementations (UserRepository)
+│       │
+│       ├── presentation/             # Presentation layer (HTTP controllers)
+│       │   ├── controllers/          # HTTP controllers (UserController)
+│       │   └── dtos/                 # Data Transfer Objects (CreateUserDto)
+│       │
+│       └── users.module.ts           # NestJS module configuration
+│
+├── shared/                           # Shared utilities and helpers
+│   ├── filters/                      # Exception filters
+│   ├── decorators/                   # Custom decorators
+│   └── utils/                        # Utility functions and constants
+│
+├── app.module.ts                     # Main application module
+├── app.controller.ts                 # Root controller
+├── app.service.ts                    # Root service
+└── main.ts                           # Application entry point
+```
+
+### Architecture Layers Explanation
+
+1. **Domain Layer**: Contains pure business logic independent of any framework. 
+   - Defines entities and repository interfaces (contracts).
+   - No dependencies on external frameworks.
+   - This is the core of the application.
+
+2. **Application Layer**: Orchestrates business logic through use cases.
+   - Implements application services and use cases.
+   - Depends on domain layer interfaces.
+   - Handles application workflows.
+
+3. **Infrastructure Layer**: Implements technical details and external dependencies.
+   - Implements repository interfaces from the domain.
+   - Handles database operations using TypeORM.
+   - Can be replaced without affecting domain or application layers.
+
+4. **Presentation Layer**: Handles HTTP requests and responses.
+   - Contains NestJS controllers.
+   - Defines DTOs for input validation.
+   - Converts HTTP requests to application layer inputs.
+
+5. **Shared Layer**: Contains cross-cutting concerns.
+   - Exception filters for error handling.
+   - Custom decorators for metadata.
+   - Utility functions used across modules.
+
+### Module Organization
+
+Each feature (like users) is organized as an independent module following the same structure:
+- **Domain**: Pure business logic
+- **Application**: Use cases
+- **Infrastructure**: Data access
+- **Presentation**: API endpoints
+
+This allows for easy scaling and adding new features like appointments, doctors, clinics, etc.
+
 ## Project setup
 
 ```bash
