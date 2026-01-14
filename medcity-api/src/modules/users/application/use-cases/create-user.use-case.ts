@@ -1,12 +1,14 @@
 import { User } from '../../domain/entities/user.entity';
 import { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { UserLastName } from '../../domain/value-object/user-lastName.vo';
-import { UserName } from '../../domain/value-object/user-name.vo';
-import { UserEmail } from '../../domain/value-object/user-email.vo';
-import { UserNumberDocument } from '../../domain/value-object/user-numberDocument.vo';
-import { UserNumberPhone } from '../../domain/value-object/user-numberPhone.vo';
-import { UserCreatedAt } from '../../domain/value-object/user-createdAt.vo';
-import { UserTypeDocument } from '../../domain/value-object/user-typeDocument.vo';
+import {
+  UserCreatedAt,
+  UserEmail,
+  UserLastName,
+  UserName,
+  UserNumberDocument,
+  UserNumberPhone,
+  UserTypeDocument,
+} from '../../domain/value-object';
 
 export class CreateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
