@@ -8,5 +8,3 @@ export interface IUserRepository {
   update(id: string, user: Partial<User>): Promise<User | null>;
   delete(id: string): Promise<boolean>;
 }
-
-export const USER_REPOSITORY_TOKEN = 'IUserRepository';

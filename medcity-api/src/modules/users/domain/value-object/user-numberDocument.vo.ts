@@ -1,4 +1,4 @@
-export class NumberDocument {
+export class UserNumberDocument {
   private readonly numberDocument: string;
 
   constructor(numberDocument: string) {
