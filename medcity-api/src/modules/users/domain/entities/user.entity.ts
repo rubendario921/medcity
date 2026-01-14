@@ -1,3 +1,4 @@
+import { UserCreatedAt } from '../value-object/user-createdAt.vo';
 import { UserEmail } from '../value-object/user-email.vo';
 import { UserLastName } from '../value-object/user-lastName.vo';
 import { UserName } from '../value-object/user-name.vo';
@@ -12,7 +13,7 @@ export class User {
   numberDocument?: NumberDocument;
   email: UserEmail;
   numberPhone?: NumberPhone;
-  createdAt: Date;
+  createdAt: UserCreatedAt;
   updatedAt: Date;
 
   constructor(
@@ -22,7 +23,7 @@ export class User {
     email: UserEmail,
     numberDocument?: NumberDocument,
     numberPhone?: NumberPhone,
-    createdAt?: Date,
+    createdAt?: UserCreatedAt,
     updatedAt?: Date,
   ) {
     this.id = id;
@@ -31,7 +32,7 @@ export class User {
     this.email = email;
     this.numberDocument = numberDocument;
     this.numberPhone = numberPhone;
-    this.createdAt = createdAt || new Date();
+    this.createdAt = createdAt || new UserCreatedAt();
     this.updatedAt = updatedAt || new Date();
   }
 }
