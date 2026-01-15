@@ -1,10 +1,12 @@
-import { UserCreatedAt } from '../value-object/user-createdAt.vo';
-import { UserEmail } from '../value-object/user-email.vo';
-import { UserLastName } from '../value-object/user-lastName.vo';
-import { UserName } from '../value-object/user-name.vo';
-import { UserNumberDocument } from '../value-object/user-numberDocument.vo';
-import { UserNumberPhone } from '../value-object/user-numberPhone.vo';
-import { UserTypeDocument } from '../value-object/user-typeDocument.vo';
+import {
+  UserCreatedAt,
+  UserEmail,
+  UserLastName,
+  UserName,
+  UserNumberDocument,
+  UserNumberPhone,
+  UserTypeDocument,
+} from '../value-object';
 
 export class User {
   id: string;
@@ -15,7 +17,7 @@ export class User {
   email: UserEmail;
   numberPhone: UserNumberPhone;
   createdAt: UserCreatedAt;
-  updatedAt: Date;
+  updatedAt?: Date;
 
   constructor(
     id: string,
