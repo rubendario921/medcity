@@ -6,4 +6,8 @@ export class UserCreatedAt {
       throw new Error('Creation date cannot be in the future');
     this.createdAt = createdAt || new Date();
   }
+
+  get value(): Date {
+    return this.createdAt;
+  }
 }
