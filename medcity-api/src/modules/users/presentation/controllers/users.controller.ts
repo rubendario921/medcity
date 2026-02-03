@@ -13,8 +13,7 @@ import {
   GetUserUseCase,
 } from '../../application/use-cases';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { UserResponseDto } from '../dtos/user-response.dto';
+import { CreateUserDto, UserResponseDto } from '../dtos';
 
 @Controller('users')
 export class UsersController {

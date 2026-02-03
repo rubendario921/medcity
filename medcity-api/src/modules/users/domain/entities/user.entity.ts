@@ -38,6 +38,6 @@ export class User {
     this.numberDocument = numberDocument;
     this.numberPhone = numberPhone;
     this.createdAt = createdAt;
-    this.updatedAt = updatedAt || new Date();
+    this.updatedAt = updatedAt;
   }
 }
