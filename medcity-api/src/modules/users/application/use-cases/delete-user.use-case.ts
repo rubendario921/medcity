@@ -1,7 +1,10 @@
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { Inject } from '@nestjs/common';
 
 export class DeleteUserUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+  ) {}
 
   async run(id: string): Promise<boolean> {
     if (!id) throw new Error('User id is required');

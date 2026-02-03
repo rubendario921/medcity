@@ -29,15 +29,15 @@ export class UserMappers {
 
   mapToORM(user: User): TypeOrmUserEntity {
     const entity = new TypeOrmUserEntity();
-    entity.id = user.id;
-    entity.name = user.name.getValue();
-    entity.lastName = user.lastName.getValue();
-    entity.typeDocument = user.typeDocument.value;
-    entity.numberDocument = user.numberDocument.getValue();
-    entity.email = user.email.getValue();
-    entity.numberPhone = user.numberPhone.getValue();
-    entity.createdAt = user.createdAt.value;
-    entity.updatedAt = user.updatedAt;
+    if (user.id) entity.id = user.id;
+    entity.name = user.name?.getValue() ?? '';
+    entity.lastName = user.lastName?.getValue() ?? '';
+    entity.typeDocument = user.typeDocument?.value ?? '';
+    entity.numberDocument = user.numberDocument?.getValue() ?? '';
+    entity.email = user.email?.getValue() ?? '';
+    entity.numberPhone = user.numberPhone?.getValue() ?? '';
+    entity.createdAt = user.createdAt?.value || new Date();
+    if (user.updatedAt && user.id) entity.updatedAt = user.updatedAt;
     return entity;
   }
 }

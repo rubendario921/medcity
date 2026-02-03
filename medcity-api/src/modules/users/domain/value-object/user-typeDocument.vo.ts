@@ -9,7 +9,7 @@ export class UserTypeDocument {
   }
 
   private isValidType(type: string): boolean {
-    const validTypes = ['ID', 'Passport', 'DriverLicense'];
+    const validTypes = ['DNI', 'ID', 'Passport', 'DriverLicense'];
     return validTypes.includes(type);
   }
   get value(): string {

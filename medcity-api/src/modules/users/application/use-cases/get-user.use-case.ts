@@ -1,8 +1,11 @@
 import { User } from '../../domain/entities/user.entity';
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { Inject } from '@nestjs/common';
 
 export class GetUserUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+  ) {}
 
   async run(id: string): Promise<User | null> {
     if (!id) throw new Error('User id is required');

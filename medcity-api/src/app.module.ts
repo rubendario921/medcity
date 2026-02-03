@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmUserEntity } from './modules/users/infrastructure/persistence/typeorm-user.entity';
 import { UsersModule } from './modules/users/users.module';
-import { UsersController } from './modules/users/presentation/controllers/users.controller';
 
 @Module({
   imports: [
@@ -23,6 +22,5 @@ import { UsersController } from './modules/users/presentation/controllers/users.
     }),
     UsersModule,
   ],
-  controllers: [UsersController],
 })
 export class AppModule {}

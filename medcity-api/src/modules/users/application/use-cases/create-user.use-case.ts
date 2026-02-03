@@ -1,5 +1,6 @@
 import { User } from '../../domain/entities/user.entity';
-import { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
+import { Inject } from '@nestjs/common';
 import {
   UserCreatedAt,
   UserEmail,
@@ -11,7 +12,9 @@ import {
 } from '../../domain/value-object';
 
 export class CreateUserUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+  ) {}
 
   async run(data: {
     name: string;
@@ -28,7 +31,7 @@ export class CreateUserUseCase {
 
     //New User Data
     const newUser = new User(
-      this.generateId(),
+      '',
       new UserName(data.name),
       new UserLastName(data.lastName),
       new UserTypeDocument(data.typeDocument),
@@ -39,9 +42,5 @@ export class CreateUserUseCase {
     );
 
     return this.userRepository.create(newUser);
-  }
-
-  private generateId(): string {
-    return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }

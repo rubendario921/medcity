@@ -9,28 +9,28 @@ import {
 } from '../value-object';
 
 export class User {
-  id: string;
-  name: UserName;
-  lastName: UserLastName;
-  typeDocument: UserTypeDocument;
-  numberDocument: UserNumberDocument;
-  email: UserEmail;
-  numberPhone: UserNumberPhone;
-  createdAt: UserCreatedAt;
+  id?: string;
+  name?: UserName;
+  lastName?: UserLastName;
+  typeDocument?: UserTypeDocument;
+  numberDocument?: UserNumberDocument;
+  email?: UserEmail;
+  numberPhone?: UserNumberPhone;
+  createdAt?: UserCreatedAt;
   updatedAt?: Date;
 
   constructor(
-    id: string,
-    name: UserName,
-    lastName: UserLastName,
-    typeDocument: UserTypeDocument,
-    numberDocument: UserNumberDocument,
-    email: UserEmail,
-    numberPhone: UserNumberPhone,
-    createdAt: UserCreatedAt,
+    id?: string,
+    name?: UserName,
+    lastName?: UserLastName,
+    typeDocument?: UserTypeDocument,
+    numberDocument?: UserNumberDocument,
+    email?: UserEmail,
+    numberPhone?: UserNumberPhone,
+    createdAt?: UserCreatedAt,
     updatedAt?: Date,
   ) {
-    this.id = id;
+    this.id = id ?? '';
     this.name = name;
     this.lastName = lastName;
     this.email = email;
