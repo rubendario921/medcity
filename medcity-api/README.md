@@ -51,11 +51,12 @@ src/
 │       │   └── value-objects/        # Value objects (immutable data)
 │       │
 │       ├── application/              # Application layer (use cases and services)
-│       │   ├── use-cases/            # Application use cases (CreateUserUseCase, GetUsersUseCase)
-│       │   └── services/             # Application services
+│       │   └── use-cases/            # Application use cases (CreateUserUseCase, GetUsersUseCase)
 │       │
 │       ├── infrastructure/           # Infrastructure layer (external dependencies)
-│       │   └── repositories/         # Repository implementations (UserRepository)
+│       │   ├── adapters/             # Adapters by TypeOrm (TyperOrm User entity)
+│       │   ├── mappers/              # Mappers to Domain a TypeOrm (User Mappers)
+│       │   └── persistence/          # Repository implementations (UserRepository)
 │       │
 │       ├── presentation/             # Presentation layer (HTTP controllers)
 │       │   ├── controllers/          # HTTP controllers (UserController)
