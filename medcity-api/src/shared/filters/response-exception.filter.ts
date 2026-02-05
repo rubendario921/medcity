@@ -21,10 +21,14 @@ export class ResponseExceptionFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       const exResponse: any = exception.getResponse();
       status = exception.getStatus();
-      message = 
+      message =
         typeof exResponse === 'string'
           ? exResponse
           : exResponse?.message ?? exResponse;
+
+      if (message && typeof message === 'object' && !Array.isArray(message)) {
+        message = JSON.stringify(message);
+      }
       error =
         exResponse && typeof exResponse === 'object'
           ? exResponse.error ?? exception.name
@@ -35,14 +39,12 @@ export class ResponseExceptionFilter implements ExceptionFilter {
       error = exception.name || error;
     }
 
-    const normalizedMessage = Array.isArray(message)
-      ? message.join(', ')
-      : message;
+    message = JSON.stringify(message);
 
     const body: ApiResult<null> = {
       timestamp: new Date().toISOString(),
       statusCode: status,
-      message: normalizedMessage,
+      message,
       error,
       data: null,
       path: request.url,
