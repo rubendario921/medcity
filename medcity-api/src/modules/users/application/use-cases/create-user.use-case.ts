@@ -1,46 +1,22 @@
-import { User } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { Inject } from '@nestjs/common';
-import {
-  UserCreatedAt,
-  UserEmail,
-  UserLastName,
-  UserName,
-  UserNumberDocument,
-  UserNumberPhone,
-  UserTypeDocument,
-} from '../../domain/value-object';
+import { Inject, Injectable } from '@nestjs/common';
+import { CreateUserDto, UserResponseDto } from '../dtos';
+import { UserApplicationMapper } from '../mappers/user-application.mapper';
 
+@Injectable()
 export class CreateUserUseCase {
   constructor(
     @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    private readonly mapper: UserApplicationMapper,
   ) {}
 
-  async run(data: {
-    name: string;
-    lastName: string;
-    typeDocument: string;
-    numberDocument: string;
-    email: string;
-    numberPhone: string;
-  }): Promise<User> {
-    //Validate User Data
-    const existingUser = await this.userRepository.findByEmail(data.email);
-    if (existingUser)
-      throw new Error(`User with email ${data.email} already exists`);
-
-    //New User Data
-    const newUser = new User(
-      '',
-      new UserName(data.name),
-      new UserLastName(data.lastName),
-      new UserTypeDocument(data.typeDocument),
-      new UserNumberDocument(data.numberDocument),
-      new UserEmail(data.email),
-      new UserNumberPhone(data.numberPhone),
-      new UserCreatedAt(),
-    );
-
-    return this.userRepository.create(newUser);
+  async run(dto: CreateUserDto): Promise<UserResponseDto> {
+    const existingUser = await this.userRepository.findByEmail(dto.email);
+    if (existingUser) {
+      throw new Error(`User with email ${dto.email} already exists`);
+    }
+    const newUser = this.mapper.toDomain(dto);
+    const createdUser = await this.userRepository.create(newUser);
+    return this.mapper.toResultDto(createdUser);
   }
 }

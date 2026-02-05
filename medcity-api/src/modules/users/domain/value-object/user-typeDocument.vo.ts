@@ -12,7 +12,7 @@ export class UserTypeDocument {
     const validTypes = ['DNI', 'ID', 'Passport', 'DriverLicense'];
     return validTypes.includes(type);
   }
-  get value(): string {
+  getValue(): string {
     return this.type;
   }
 }

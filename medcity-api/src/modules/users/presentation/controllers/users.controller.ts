@@ -12,9 +12,10 @@ import {
   GetAllUserUseCase,
   GetUserUseCase,
 } from '../../application/use-cases';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { CreateUserDto, UserResponseDto } from '../dtos';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserDto, UserResponseDto } from '../../application/dtos';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -26,27 +27,36 @@ export class UsersController {
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get All Users' })
-  @ApiResponse({ status: 200, description: 'List of all users.' })
-  async getAllUsers() {
+  @ApiResponse({
+    status: 200,
+    description: 'List of all users.',
+    type: [UserResponseDto],
+  })
+  async getAllUsers(): Promise<UserResponseDto[]> {
     return this.getAllUserUseCase.run();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Get User by ID' })
-  @ApiResponse({ status: 200, description: 'User found successfully.' })
-  async getUserById(@Param('id') id: string) {
-    return this.getUserUseCase.run(id);
+  @ApiResponse({
+    status: 200,
+    description: 'User found successfully.',
+    type: UserResponseDto,
+  })
+  async getUserById(@Param('id') id: string): Promise<UserResponseDto> {
+    return await this.getUserUseCase.run(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new user' })
-  @ApiResponse({ type: UserResponseDto })
-  async createUser(
-    @Body() createUser: CreateUserDto,
-  ): Promise<UserResponseDto> {
-    const user = await this.createUserUseCase.run(createUser);
-    return UserResponseDto.toResponseDto(user);
+  @ApiResponse({
+    status: 201,
+    description: 'User created successfully.',
+    type: UserResponseDto,
+  })
+  async createUser(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
+    return await this.createUserUseCase.run(dto);
   }
 }

@@ -1,5 +1,5 @@
 export class UserCreatedAt {
-  private readonly createdAt: Date;
+  private createdAt: Date;
 
   constructor(createdAt?: Date) {
     if (createdAt && createdAt > new Date())
@@ -7,7 +7,7 @@ export class UserCreatedAt {
     this.createdAt = createdAt || new Date();
   }
 
-  get value(): Date {
+  getValue(): Date {
     return this.createdAt;
   }
 }

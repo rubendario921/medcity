@@ -1,57 +1,25 @@
-import { User } from '../../domain/entities/user.entity';
 import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { Inject } from '@nestjs/common';
-import {
-  UserEmail,
-  UserLastName,
-  UserName,
-  UserNumberDocument,
-  UserNumberPhone,
-  UserTypeDocument,
-} from '../../domain/value-object';
-
+import { Inject, Injectable } from '@nestjs/common';
+import { UpdateUserDto, UserResponseDto } from '../dtos';
+import { UserApplicationMapper } from '../mappers/user-application.mapper';
+@Injectable()
 export class UpdateUserUseCase {
   constructor(
     @Inject('IUserRepository') private readonly userRepository: IUserRepository,
+    private readonly mapper: UserApplicationMapper,
   ) {}
 
-  async run(
-    id: string,
-    data: {
-      name?: string;
-      lastName?: string;
-      typeDocument?: string;
-      numberDocument?: string;
-      email?: string;
-      numberPhone?: string;
-    },
-  ): Promise<User> {
+  async run(id: string, dto: UpdateUserDto): Promise<UserResponseDto> {
     if (!id) throw new Error('User id is required');
 
     const user = await this.userRepository.findById(id);
     if (!user) throw new Error(`User with id ${id} not found`);
 
-    const updateData = new User(
-      id,
-      data.name ? new UserName(data.name) : user.name,
-      data.lastName ? new UserLastName(data.lastName) : user.lastName,
-      data.typeDocument
-        ? new UserTypeDocument(data.typeDocument)
-        : user.typeDocument,
-      data.numberDocument
-        ? new UserNumberDocument(data.numberDocument)
-        : user.numberDocument,
-      data.email ? new UserEmail(data.email) : user.email,
-      data.numberPhone
-        ? new UserNumberPhone(data.numberPhone)
-        : user.numberPhone,
-      user.createdAt,
-      new Date(),
-    );
+    const data = this.mapper.toDomainUpdate(dto);
 
-    const updatedUser = await this.userRepository.update(id, updateData);
+    const updatedUser = await this.userRepository.update(id, data);
     if (!updatedUser) throw new Error(`Failed to update user with id ${id}`);
 
-    return updatedUser;
+    return this.mapper.toResultDto(updatedUser);
   }
 }
