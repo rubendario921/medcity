@@ -14,6 +14,7 @@ import {
 } from '../../application/use-cases';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, UserResponseDto } from '../../application/dtos';
+import { ApiPayload } from 'src/shared/contracts/api-payload';
 
 @ApiTags('users')
 @Controller('users')
@@ -22,7 +23,7 @@ export class UsersController {
     private readonly getAllUserUseCase: GetAllUserUseCase,
     private readonly getUserUseCase: GetUserUseCase,
     private readonly createUserUseCase: CreateUserUseCase,
-  ) {}
+  ) { }
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -32,8 +33,12 @@ export class UsersController {
     description: 'List of all users.',
     type: [UserResponseDto],
   })
-  async getAllUsers(): Promise<UserResponseDto[]> {
-    return this.getAllUserUseCase.run();
+  async getAllUsers(): Promise<ApiPayload<UserResponseDto[]>> {
+    const users = await this.getAllUserUseCase.run();
+    return {
+      message:'Users found',
+      data: users,
+    };
   }
 
   @Get(':id')
@@ -44,8 +49,11 @@ export class UsersController {
     description: 'User found successfully.',
     type: UserResponseDto,
   })
-  async getUserById(@Param('id') id: string): Promise<UserResponseDto> {
-    return await this.getUserUseCase.run(id);
+  async getUserById(@Param('id') id: string): Promise<ApiPayload<UserResponseDto>> {
+    const user = await this.getUserUseCase.run(id);
+    return {
+      message: 'User found'
+    };
   }
 
   @Post()
@@ -56,7 +64,12 @@ export class UsersController {
     description: 'User created successfully.',
     type: UserResponseDto,
   })
-  async createUser(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-    return await this.createUserUseCase.run(dto);
+  async createUser(@Body() dto: CreateUserDto): Promise<ApiPayload<UserResponseDto>> {
+    const user = await this.createUserUseCase.run(dto);
+    return {
+      message: 'New User',
+      data: user,
+    };
   }
 }
+
