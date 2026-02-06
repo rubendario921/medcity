@@ -2,8 +2,12 @@ export class UserEmail {
   private readonly email: string;
 
   constructor(email: string) {
-    if (!email.includes('@')) throw new Error('Invalid email format');
-    this.email = email;
+    let data = email?.trim().toLowerCase();
+    if (!data || !data.includes("@")) {
+      throw new Error("Invalid email format");
+    }
+
+    this.email = data;
   }
 
   getValue(): string {

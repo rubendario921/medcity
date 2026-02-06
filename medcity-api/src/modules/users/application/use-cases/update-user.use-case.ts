@@ -1,25 +1,27 @@
-import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
-import { Inject, Injectable } from '@nestjs/common';
-import { UpdateUserDto, UserResponseDto } from '../dtos';
-import { UserApplicationMapper } from '../mappers/user-application.mapper';
-@Injectable()
+import { User } from "../../domain/entities/user.entity";
+import type { IUserRepository } from "../../domain/repositories/user.repository.interface";
+
 export class UpdateUserUseCase {
-  constructor(
-    @Inject('IUserRepository') private readonly userRepository: IUserRepository,
-    private readonly mapper: UserApplicationMapper,
-  ) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
-  async run(id: string, dto: UpdateUserDto): Promise<UserResponseDto> {
-    if (!id) throw new Error('User id is required');
+  async run(id: string, user: User): Promise<User> {
+    if (!id) throw new Error("User id is required");
 
-    const user = await this.userRepository.findById(id);
-    if (!user) throw new Error(`User with id ${id} not found`);
+    let data = await this.userRepository.findById(id);
+    if (!data) throw new Error(`User with id ${id} not found`);
 
-    const data = this.mapper.toDomainUpdate(dto);
+    data.name = user.name ?? data.name;
+    data.lastName = user.lastName ?? data.lastName;
+    data.typeDocument = user.typeDocument ?? data.typeDocument;
+    data.numberDocument = user.numberDocument ?? data.numberDocument;
+    data.email = user.email ?? data.email;
+    data.numberPhone = user.numberPhone ?? data.numberPhone;
+    data.createdAt = user.createdAt ?? data.createdAt;
+    data.updatedAt = user.updatedAt ?? data.updatedAt;
 
-    const updatedUser = await this.userRepository.update(id, data);
-    if (!updatedUser) throw new Error(`Failed to update user with id ${id}`);
+    const res = await this.userRepository.update(id, data);
+    if (!res) throw new Error(`Failed to update user with id ${id}`);
 
-    return this.mapper.toResultDto(updatedUser);
+    return res;
   }
 }

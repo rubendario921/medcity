@@ -1,6 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../../domain/entities/user.entity';
-import { UserResponseDto } from '../dtos/user-response.dto';
+import { User } from "../../domain/entities/user.entity";
 import {
   UserCreatedAt,
   UserEmail,
@@ -9,10 +7,13 @@ import {
   UserNumberDocument,
   UserNumberPhone,
   UserTypeDocument,
-} from '../../domain/value-object';
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+} from "../../domain/value-object";
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  UserResponseDto,
+} from "../../presentation/dtos";
 
-@Injectable()
 export class UserApplicationMapper {
   toResultDto(user: User): UserResponseDto {
     return new UserResponseDto({
@@ -32,9 +33,9 @@ export class UserApplicationMapper {
     return users.map((user) => this.toResultDto(user));
   }
 
-  toDomain(dto: CreateUserDto): User {
+  toDomainCreate(dto: CreateUserDto): User {
     return new User(
-      '',
+      "",
       new UserName(dto.name),
       new UserLastName(dto.lastName),
       new UserTypeDocument(dto.typeDocument),
@@ -47,7 +48,7 @@ export class UserApplicationMapper {
 
   toDomainUpdate(dto: UpdateUserDto): User {
     return new User(
-      '',
+      "",
       dto.name ? new UserName(dto.name) : undefined,
       dto.lastName ? new UserLastName(dto.lastName) : undefined,
       dto.typeDocument ? new UserTypeDocument(dto.typeDocument) : undefined,
