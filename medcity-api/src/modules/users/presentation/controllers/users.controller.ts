@@ -52,7 +52,8 @@ export class UsersController {
   async getUserById(@Param('id') id: string): Promise<ApiPayload<UserResponseDto>> {
     const user = await this.getUserUseCase.run(id);
     return {
-      message: 'User found'
+      message: 'User found',
+      data: user
     };
   }
 
