@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmUserEntity } from './modules/users/infrastructure/persistence/typeorm-user.entity';
 import { UsersModule } from './modules/users/users.module';
 
@@ -8,17 +8,21 @@ import { UsersModule } from './modules/users/users.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',
+      envFilePath: ['.env', '../.env'],
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      database: process.env.DB_DATABASE,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
-      synchronize: process.env.DB_SYNCHRONIZE === 'true',
-      entities: [TypeOrmUserEntity],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT', 5432),
+        database: configService.get<string>('DB_DATABASE'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        synchronize: configService.get<string>('DB_SYNCHRONIZE') === 'true',
+        entities: [TypeOrmUserEntity],
+      }),
     }),
     UsersModule,
   ],
