@@ -1,98 +1,293 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MedCity - Sistema de Gestión de Citas Médicas
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 📋 Descripción del Proyecto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**MedCity** es una aplicación web desarrollada para la gestión y programación de citas médicas, dedicada al cuidado de clínicas y hospitales. El sistema permite administrar usuarios, médicos, pacientes y citas de manera eficiente, proporcionando una solución integral para instituciones de salud.
 
-## Description
+## 🏗️ Arquitectura
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+El proyecto está construido siguiendo los principios de **Arquitectura Hexagonal (Ports & Adapters)** y **Domain-Driven Design (DDD)**, lo que garantiza:
 
-## Project setup
+- ✅ Separación clara de responsabilidades
+- ✅ Independencia del framework
+- ✅ Facilidad para testing
+- ✅ Mantenibilidad y escalabilidad
+- ✅ Flexibilidad para cambiar implementaciones
 
-```bash
-$ pnpm install
+### Estructura de Capas
+
+```
+src/
+├── modules/
+│   └── users/
+│       ├── domain/              # Capa de Dominio
+│       │   ├── entities/        # Entidades de negocio
+│       │   ├── value-objects/   # Objetos de valor
+│       │   └── repositories/    # Interfaces de repositorios (Ports)
+│       │
+│       ├── application/         # Capa de Aplicación
+│       │   ├── use-cases/       # Casos de uso (lógica de negocio)
+│       │   ├── dtos/            # DTOs de aplicación
+│       │   └── mappers/         # Mappers de aplicación
+│       │
+│       ├── infrastructure/      # Capa de Infraestructura
+│       │   ├── persistence/     # Entidades de TypeORM
+│       │   ├── adapters/        # Implementaciones de repositorios (Adapters)
+│       │   └── mappers/         # Mappers de infraestructura
+│       │
+│       └── presentation/        # Capa de Presentación
+│           ├── controllers/     # Controladores HTTP
+│           └── dtos/            # DTOs de presentación (Request/Response)
+│
+├── shared/                      # Código compartido entre módulos
+├── app.module.ts                # Módulo principal de la aplicación
+└── main.ts                      # Punto de entrada de la aplicación
 ```
 
-## Compile and run the project
+## 🛠️ Stack Tecnológico
+
+### Backend (API)
+
+| Tecnología            | Versión  | Descripción                              |
+| --------------------- | -------- | ---------------------------------------- |
+| **Node.js**           | LTS      | Runtime de JavaScript                    |
+| **NestJS**            | ^11.1.12 | Framework progresivo de Node.js          |
+| **TypeScript**        | ^5.9.3   | Superset tipado de JavaScript            |
+| **TypeORM**           | ^0.3.28  | ORM para TypeScript y JavaScript         |
+| **PostgreSQL**        | -        | Base de datos relacional                 |
+| **class-validator**   | ^0.14.3  | Validación de DTOs basada en decoradores |
+| **class-transformer** | ^0.5.1   | Transformación de objetos                |
+| **Swagger/OpenAPI**   | ^11.2.5  | Documentación automática de API          |
+
+### Herramientas de Desarrollo
+
+| Herramienta  | Versión | Descripción                    |
+| ------------ | ------- | ------------------------------ |
+| **ESLint**   | ^9.39.2 | Linter para TypeScript         |
+| **Prettier** | ^3.8.1  | Formateador de código          |
+| **Jest**     | ^30.2.0 | Framework de testing           |
+| **ts-jest**  | ^29.4.6 | Preset de Jest para TypeScript |
+
+## 📦 Instalación
+
+### Prerrequisitos
+
+- Node.js (LTS)
+- PostgreSQL
+- npm o pnpm
+
+### Pasos de Instalación
+
+1. **Clonar el repositorio**
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+git clone <repository-url>
+cd medcity
 ```
 
-## Run tests
+1. **Instalar dependencias**
 
 ```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+cd medcity-api
+npm install
+# o
+pnpm install
 ```
 
-## Deployment
+1. **Configurar variables de entorno**
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Crear un archivo `.env` en la raíz del proyecto `medcity-api/`:
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=medcity_db
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_SYNCHRONIZE=true  # Solo en desarrollo, false en producción
+
+# Application
+PORT=3000
+```
+
+1. **Ejecutar la aplicación**
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Modo desarrollo
+npm run start:dev
+
+# Modo producción
+npm run build
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🚀 Scripts Disponibles
 
-## Resources
+```bash
+# Desarrollo
+npm run start:dev          # Inicia el servidor en modo desarrollo con hot-reload
+npm run start:debug        # Inicia en modo debug
 
-Check out a few resources that may come in handy when working with NestJS:
+# Producción
+npm run build              # Compila el proyecto
+npm run start:prod         # Inicia el servidor en modo producción
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Testing
+npm run test               # Ejecuta los tests
+npm run test:watch         # Ejecuta tests en modo watch
+npm run test:cov           # Ejecuta tests con cobertura
+npm run test:e2e           # Ejecuta tests end-to-end
 
-## Support
+# Calidad de código
+npm run lint               # Ejecuta ESLint
+npm run format             # Formatea el código con Prettier
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📚 Documentación de la API
 
-## Stay in touch
+Una vez que la aplicación esté corriendo, la documentación interactiva de Swagger estará disponible en:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+http://localhost:3000/api
+```
 
-## License
+## 🔄 Flujo de Datos entre Capas
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Creación de un Usuario (Ejemplo)
+
+```
+1. HTTP Request (JSON)
+   ↓
+2. Presentation Layer (Controller)
+   - Recibe CreateUserDto (DTO de presentación)
+   - Valida con class-validator
+   - Transforma a CreateUserCommandDto (DTO de aplicación)
+   ↓
+3. Application Layer (Use Case)
+   - Recibe CreateUserCommandDto
+   - Ejecuta lógica de negocio
+   - Usa UserApplicationMapper para crear entidad de dominio
+   - Llama al repositorio (port)
+   - Retorna UserResultDto (DTO de aplicación)
+   ↓
+4. Infrastructure Layer (Repository)
+   - Implementa el port del repositorio
+   - Transforma entidad de dominio a entidad de TypeORM
+   - Persiste en la base de datos
+   - Retorna entidad de dominio
+   ↓
+5. Application Layer
+   - Transforma entidad a UserResultDto
+   ↓
+6. Presentation Layer
+   - Transforma UserResultDto a UserResponseDto
+   - Retorna respuesta HTTP (JSON)
+```
+
+## 📝 Convenciones de DTOs
+
+### DTOs de Presentación (`presentation/dtos/`)
+
+- **Propósito**: Manejar la comunicación HTTP (Request/Response)
+- **Características**:
+  - Decoradores de validación (`@IsString`, `@IsEmail`, etc.)
+  - Decoradores de Swagger (`@ApiProperty`)
+  - Transformación desde/hacia DTOs de aplicación
+- **Ejemplos**: `CreateUserDto`, `UserResponseDto`
+
+### DTOs de Aplicación (`application/dtos/`)
+
+- **Propósito**: Representar comandos y resultados de casos de uso
+- **Características**:
+  - Sin decoradores de framework
+  - Datos puros (POJO)
+  - Independientes de la capa de presentación
+- **Ejemplos**: `CreateUserCommandDto`, `UpdateUserCommandDto`, `UserResultDto`
+
+### Entidades de Dominio (`domain/entities/`)
+
+- **Propósito**: Representar conceptos del negocio
+- **Características**:
+  - Contienen lógica de negocio
+  - Usan Value Objects
+  - Independientes de la infraestructura
+
+### Entidades de Infraestructura (`infrastructure/persistence/`)
+
+- **Propósito**: Mapear a tablas de base de datos
+- **Características**:
+  - Decoradores de TypeORM
+  - Mapeo directo a la base de datos
+- **Ejemplos**: `TypeOrmUserEntity`
+
+## 🎯 Principios Aplicados
+
+### SOLID
+
+- **S**ingle Responsibility: Cada clase tiene una única responsabilidad
+- **O**pen/Closed: Abierto para extensión, cerrado para modificación
+- **L**iskov Substitution: Las implementaciones pueden sustituir interfaces
+- **I**nterface Segregation: Interfaces específicas por cliente
+- **D**ependency Inversion: Dependencia de abstracciones, no de concreciones
+
+### Clean Architecture
+
+- Independencia de frameworks
+- Testeable
+- Independencia de la UI
+- Independencia de la base de datos
+- Independencia de agentes externos
+
+## 🔐 Seguridad
+
+- Validación de datos con `class-validator`
+- Variables de entorno para configuración sensible
+- Preparado para implementar autenticación JWT
+- Preparado para implementar autorización basada en roles
+
+## 🧪 Testing
+
+El proyecto está configurado para testing con Jest:
+
+```bash
+# Tests unitarios
+npm run test
+
+# Tests con cobertura
+npm run test:cov
+
+# Tests end-to-end
+npm run test:e2e
+```
+
+## 📈 Próximas Funcionalidades
+
+- [ ] Módulo de Médicos
+- [ ] Módulo de Pacientes
+- [ ] Módulo de Citas
+- [ ] Módulo de Especialidades
+- [ ] Sistema de autenticación y autorización
+- [ ] Notificaciones por email
+- [ ] Dashboard de administración
+- [ ] Reportes y estadísticas
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto es privado y no tiene licencia pública.
+
+## 👥 Autor
+
+Desarrollado para la gestión eficiente de citas médicas en clínicas y hospitales.
+
+---
+
+**Nota**: Este proyecto sigue evolucionando. Para más información sobre la arquitectura y patrones utilizados, consulta la documentación en el código fuente.

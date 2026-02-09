@@ -1,0 +1,40 @@
+services:
+  db:
+    image: docker.io/library/postgres:latest
+    container_name: medcity-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build: ./medcity-api
+    container_name: medcity-api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - ./medcity-api/.env
+    environment:
+      DB_HOST: db
+
+  web:
+    build: ./medcity-web
+    container_name: medcity-web
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    env_file:
+      - ./medcity-web/.env
+    environment:
+      API_URL: http://localhost:3000
+
+volumes:
+  postgres_data:
