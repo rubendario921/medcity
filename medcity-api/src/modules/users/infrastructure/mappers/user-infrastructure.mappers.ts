@@ -36,8 +36,7 @@ export class UserMappers {
     entity.numberDocument = user.numberDocument?.getValue() ?? '';
     entity.email = user.email?.getValue() ?? '';
     entity.numberPhone = user.numberPhone?.getValue() ?? '';
-    entity.createdAt = user.createdAt?.getValue() || new Date();
-    if (user.updatedAt && user.id) entity.updatedAt = user.updatedAt;
+    if (user.createdAt) entity.createdAt = user.createdAt.getValue();
     return entity;
   }
 }

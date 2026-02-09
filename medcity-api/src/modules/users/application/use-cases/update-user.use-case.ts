@@ -1,13 +1,13 @@
-import { User } from "../../domain/entities/user.entity";
-import type { IUserRepository } from "../../domain/repositories/user.repository.interface";
+import { User } from '../../domain/entities/user.entity';
+import type { IUserRepository } from '../../domain/repositories/user.repository.interface';
 
 export class UpdateUserUseCase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   async run(id: string, user: User): Promise<User> {
-    if (!id) throw new Error("User id is required");
+    if (!id) throw new Error('User id is required');
 
-    let data = await this.userRepository.findById(id);
+    const data = await this.userRepository.findById(id);
     if (!data) throw new Error(`User with id ${id} not found`);
 
     data.name = user.name ?? data.name;
@@ -16,8 +16,6 @@ export class UpdateUserUseCase {
     data.numberDocument = user.numberDocument ?? data.numberDocument;
     data.email = user.email ?? data.email;
     data.numberPhone = user.numberPhone ?? data.numberPhone;
-    data.createdAt = user.createdAt ?? data.createdAt;
-    data.updatedAt = user.updatedAt ?? data.updatedAt;
 
     const res = await this.userRepository.update(id, data);
     if (!res) throw new Error(`Failed to update user with id ${id}`);

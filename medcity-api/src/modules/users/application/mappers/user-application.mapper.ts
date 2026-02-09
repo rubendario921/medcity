@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/user.entity";
+import { User } from '../../domain/entities/user.entity';
 import {
   UserCreatedAt,
   UserEmail,
@@ -7,12 +7,12 @@ import {
   UserNumberDocument,
   UserNumberPhone,
   UserTypeDocument,
-} from "../../domain/value-object";
+} from '../../domain/value-object';
 import {
   CreateUserDto,
   UpdateUserDto,
   UserResponseDto,
-} from "../../presentation/dtos";
+} from '../../presentation/dtos';
 
 export class UserApplicationMapper {
   toResultDto(user: User): UserResponseDto {
@@ -35,7 +35,7 @@ export class UserApplicationMapper {
 
   toDomainCreate(dto: CreateUserDto): User {
     return new User(
-      "",
+      '',
       new UserName(dto.name),
       new UserLastName(dto.lastName),
       new UserTypeDocument(dto.typeDocument),
@@ -48,7 +48,7 @@ export class UserApplicationMapper {
 
   toDomainUpdate(dto: UpdateUserDto): User {
     return new User(
-      "",
+      '',
       dto.name ? new UserName(dto.name) : undefined,
       dto.lastName ? new UserLastName(dto.lastName) : undefined,
       dto.typeDocument ? new UserTypeDocument(dto.typeDocument) : undefined,
@@ -57,8 +57,6 @@ export class UserApplicationMapper {
         : undefined,
       dto.email ? new UserEmail(dto.email) : undefined,
       dto.numberPhone ? new UserNumberPhone(dto.numberPhone) : undefined,
-      new UserCreatedAt(),
-      new Date(),
     );
   }
 }
