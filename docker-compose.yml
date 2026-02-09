@@ -1,12 +1,13 @@
 services:
   db:
-    image: docker.io/library/postgres:latest
-    container_name: medcity-db
+    image: postgres:15-alpine
+    container_name: medcity-bdd
     restart: always
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -20,7 +21,7 @@ services:
     depends_on:
       - db
     env_file:
-      - ./medcity-api/.env
+      - ./.env
     environment:
       DB_HOST: db
 
@@ -32,7 +33,7 @@ services:
     depends_on:
       - api
     env_file:
-      - ./medcity-web/.env
+      - ./.env
     environment:
       API_URL: http://localhost:3000
 
