@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15-alpine
+    image: docker.io/library/postgres:latest
     container_name: medcity-db
     restart: always
     environment:
@@ -9,6 +9,8 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   api:
     build: ./medcity-api
@@ -21,6 +23,18 @@ services:
       - ./medcity-api/.env
     environment:
       DB_HOST: db
+
+  web:
+    build: ./medcity-web
+    container_name: medcity-web
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    env_file:
+      - ./medcity-web/.env
+    environment:
+      API_URL: http://localhost:3000
 
 volumes:
   postgres_data:
