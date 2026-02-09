@@ -1,185 +1,293 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# MedCity - Sistema de Gestión de Citas Médicas
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 📋 Descripción del Proyecto
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+**MedCity** es una aplicación web desarrollada para la gestión y programación de citas médicas, dedicada al cuidado de clínicas y hospitales. El sistema permite administrar usuarios, médicos, pacientes y citas de manera eficiente, proporcionando una solución integral para instituciones de salud.
 
-## Description
+## 🏗️ Arquitectura
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+El proyecto está construido siguiendo los principios de **Arquitectura Hexagonal (Ports & Adapters)** y **Domain-Driven Design (DDD)**, lo que garantiza:
 
-## Technology Stack
+- ✅ Separación clara de responsabilidades
+- ✅ Independencia del framework
+- ✅ Facilidad para testing
+- ✅ Mantenibilidad y escalabilidad
+- ✅ Flexibilidad para cambiar implementaciones
 
-This project uses the following technologies and principles to build a robust and scalable REST API for medical appointment booking:
-
-- **NestJS**: A Node.js framework for building efficient and scalable backend applications, based on TypeScript.
-- **TypeScript**: A programming language that adds static typing to JavaScript, improving maintainability and reducing errors.
-- **PostgreSQL**: A relational database management system, used to store user and appointment data.
-- **TypeORM**: An ORM (Object-Relational Mapping) for TypeScript and JavaScript, simplifying database interactions.
-- **Swagger/OpenAPI**: A tool for documenting and interactively testing the API.
-- **Hexagonal Architecture (Ports and Adapters)**: An architectural pattern that separates business logic from external dependencies, promoting testability and maintainability.
-- **Clean Code and SOLID**: Software development principles for writing clean, readable, and modular code, following SOLID principles (Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion).
-
-## Project Structure
-
-The project follows a **Hexagonal Architecture** pattern, organizing code into modules with clear separation of concerns:
+### Estructura de Capas
 
 ```
 src/
-├── modules/                          # Feature modules
-│   └── users/                        # User module
-│       ├── domain/                   # Business logic layer (independent of frameworks)
-│       │   ├── entities/             # Domain entities (User entity)
-│       │   ├── repositories/         # Repository interfaces (contracts)
-│       │   └── value-objects/        # Value objects (immutable data)
+├── modules/
+│   └── users/
+│       ├── domain/              # Capa de Dominio
+│       │   ├── entities/        # Entidades de negocio
+│       │   ├── value-objects/   # Objetos de valor
+│       │   └── repositories/    # Interfaces de repositorios (Ports)
 │       │
-│       ├── application/              # Application layer (use cases and services)
-│       │   └── use-cases/            # Application use cases (CreateUserUseCase, GetUsersUseCase)
+│       ├── application/         # Capa de Aplicación
+│       │   ├── use-cases/       # Casos de uso (lógica de negocio)
+│       │   ├── dtos/            # DTOs de aplicación
+│       │   └── mappers/         # Mappers de aplicación
 │       │
-│       ├── infrastructure/           # Infrastructure layer (external dependencies)
-│       │   ├── adapters/             # Adapters by TypeOrm (TyperOrm User entity)
-│       │   ├── mappers/              # Mappers to Domain a TypeOrm (User Mappers)
-│       │   └── persistence/          # Repository implementations (UserRepository)
+│       ├── infrastructure/      # Capa de Infraestructura
+│       │   ├── persistence/     # Entidades de TypeORM
+│       │   ├── adapters/        # Implementaciones de repositorios (Adapters)
+│       │   └── mappers/         # Mappers de infraestructura
 │       │
-│       ├── presentation/             # Presentation layer (HTTP controllers)
-│       │   ├── controllers/          # HTTP controllers (UserController)
-│       │   └── dtos/                 # Data Transfer Objects (CreateUserDto)
-│       │
-│       └── users.module.ts           # NestJS module configuration
+│       └── presentation/        # Capa de Presentación
+│           ├── controllers/     # Controladores HTTP
+│           └── dtos/            # DTOs de presentación (Request/Response)
 │
-├── shared/                           # Shared utilities and helpers
-│   ├── filters/                      # Exception filters
-│   ├── decorators/                   # Custom decorators
-│   └── utils/                        # Utility functions and constants
-│
-├── app.module.ts                     # Main application module
-├── app.controller.ts                 # Root controller
-├── app.service.ts                    # Root service
-└── main.ts                           # Application entry point
+├── shared/                      # Código compartido entre módulos
+├── app.module.ts                # Módulo principal de la aplicación
+└── main.ts                      # Punto de entrada de la aplicación
 ```
 
-### Architecture Layers Explanation
+## 🛠️ Stack Tecnológico
 
-1. **Domain Layer**: Contains pure business logic independent of any framework. 
-   - Defines entities and repository interfaces (contracts).
-   - No dependencies on external frameworks.
-   - This is the core of the application.
+### Backend (API)
 
-2. **Application Layer**: Orchestrates business logic through use cases.
-   - Implements application services and use cases.
-   - Depends on domain layer interfaces.
-   - Handles application workflows.
+| Tecnología            | Versión  | Descripción                              |
+| --------------------- | -------- | ---------------------------------------- |
+| **Node.js**           | LTS      | Runtime de JavaScript                    |
+| **NestJS**            | ^11.1.12 | Framework progresivo de Node.js          |
+| **TypeScript**        | ^5.9.3   | Superset tipado de JavaScript            |
+| **TypeORM**           | ^0.3.28  | ORM para TypeScript y JavaScript         |
+| **PostgreSQL**        | -        | Base de datos relacional                 |
+| **class-validator**   | ^0.14.3  | Validación de DTOs basada en decoradores |
+| **class-transformer** | ^0.5.1   | Transformación de objetos                |
+| **Swagger/OpenAPI**   | ^11.2.5  | Documentación automática de API          |
 
-3. **Infrastructure Layer**: Implements technical details and external dependencies.
-   - Implements repository interfaces from the domain.
-   - Handles database operations using TypeORM.
-   - Can be replaced without affecting domain or application layers.
+### Herramientas de Desarrollo
 
-4. **Presentation Layer**: Handles HTTP requests and responses.
-   - Contains NestJS controllers.
-   - Defines DTOs for input validation.
-   - Converts HTTP requests to application layer inputs.
+| Herramienta  | Versión | Descripción                    |
+| ------------ | ------- | ------------------------------ |
+| **ESLint**   | ^9.39.2 | Linter para TypeScript         |
+| **Prettier** | ^3.8.1  | Formateador de código          |
+| **Jest**     | ^30.2.0 | Framework de testing           |
+| **ts-jest**  | ^29.4.6 | Preset de Jest para TypeScript |
 
-5. **Shared Layer**: Contains cross-cutting concerns.
-   - Exception filters for error handling.
-   - Custom decorators for metadata.
-   - Utility functions used across modules.
+## 📦 Instalación
 
-### Module Organization
+### Prerrequisitos
 
-Each feature (like users) is organized as an independent module following the same structure:
-- **Domain**: Pure business logic
-- **Application**: Use cases
-- **Infrastructure**: Data access
-- **Presentation**: API endpoints
+- Node.js (LTS)
+- PostgreSQL
+- npm o pnpm
 
-This allows for easy scaling and adding new features like appointments, doctors, clinics, etc.
+### Pasos de Instalación
 
-## Project setup
+1. **Clonar el repositorio**
 
 ```bash
-$ pnpm install
+git clone <repository-url>
+cd medcity
 ```
 
-## Compile and run the project
+1. **Instalar dependencias**
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+cd medcity-api
+npm install
+# o
+pnpm install
 ```
 
-## Run tests
+1. **Configurar variables de entorno**
+
+Crear un archivo `.env` en la raíz del proyecto `medcity-api/`:
+
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_DATABASE=medcity_db
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_SYNCHRONIZE=true  # Solo en desarrollo, false en producción
+
+# Application
+PORT=3000
+```
+
+1. **Ejecutar la aplicación**
 
 ```bash
-# unit tests
-$ pnpm run test
+# Modo desarrollo
+npm run start:dev
 
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+# Modo producción
+npm run build
+npm run start:prod
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## 🚀 Scripts Disponibles
 
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+# Desarrollo
+npm run start:dev          # Inicia el servidor en modo desarrollo con hot-reload
+npm run start:debug        # Inicia en modo debug
+
+# Producción
+npm run build              # Compila el proyecto
+npm run start:prod         # Inicia el servidor en modo producción
+
+# Testing
+npm run test               # Ejecuta los tests
+npm run test:watch         # Ejecuta tests en modo watch
+npm run test:cov           # Ejecuta tests con cobertura
+npm run test:e2e           # Ejecuta tests end-to-end
+
+# Calidad de código
+npm run lint               # Ejecuta ESLint
+npm run format             # Formatea el código con Prettier
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 📚 Documentación de la API
 
-## Resources
+Una vez que la aplicación esté corriendo, la documentación interactiva de Swagger estará disponible en:
 
-Check out a few resources that may come in handy when working with NestJS:
+```
+http://localhost:3000/api
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🔄 Flujo de Datos entre Capas
 
-## Support
+### Creación de un Usuario (Ejemplo)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+1. HTTP Request (JSON)
+   ↓
+2. Presentation Layer (Controller)
+   - Recibe CreateUserDto (DTO de presentación)
+   - Valida con class-validator
+   - Transforma a CreateUserCommandDto (DTO de aplicación)
+   ↓
+3. Application Layer (Use Case)
+   - Recibe CreateUserCommandDto
+   - Ejecuta lógica de negocio
+   - Usa UserApplicationMapper para crear entidad de dominio
+   - Llama al repositorio (port)
+   - Retorna UserResultDto (DTO de aplicación)
+   ↓
+4. Infrastructure Layer (Repository)
+   - Implementa el port del repositorio
+   - Transforma entidad de dominio a entidad de TypeORM
+   - Persiste en la base de datos
+   - Retorna entidad de dominio
+   ↓
+5. Application Layer
+   - Transforma entidad a UserResultDto
+   ↓
+6. Presentation Layer
+   - Transforma UserResultDto a UserResponseDto
+   - Retorna respuesta HTTP (JSON)
+```
 
-## Stay in touch
+## 📝 Convenciones de DTOs
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### DTOs de Presentación (`presentation/dtos/`)
 
-## License
+- **Propósito**: Manejar la comunicación HTTP (Request/Response)
+- **Características**:
+  - Decoradores de validación (`@IsString`, `@IsEmail`, etc.)
+  - Decoradores de Swagger (`@ApiProperty`)
+  - Transformación desde/hacia DTOs de aplicación
+- **Ejemplos**: `CreateUserDto`, `UserResponseDto`
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### DTOs de Aplicación (`application/dtos/`)
+
+- **Propósito**: Representar comandos y resultados de casos de uso
+- **Características**:
+  - Sin decoradores de framework
+  - Datos puros (POJO)
+  - Independientes de la capa de presentación
+- **Ejemplos**: `CreateUserCommandDto`, `UpdateUserCommandDto`, `UserResultDto`
+
+### Entidades de Dominio (`domain/entities/`)
+
+- **Propósito**: Representar conceptos del negocio
+- **Características**:
+  - Contienen lógica de negocio
+  - Usan Value Objects
+  - Independientes de la infraestructura
+
+### Entidades de Infraestructura (`infrastructure/persistence/`)
+
+- **Propósito**: Mapear a tablas de base de datos
+- **Características**:
+  - Decoradores de TypeORM
+  - Mapeo directo a la base de datos
+- **Ejemplos**: `TypeOrmUserEntity`
+
+## 🎯 Principios Aplicados
+
+### SOLID
+
+- **S**ingle Responsibility: Cada clase tiene una única responsabilidad
+- **O**pen/Closed: Abierto para extensión, cerrado para modificación
+- **L**iskov Substitution: Las implementaciones pueden sustituir interfaces
+- **I**nterface Segregation: Interfaces específicas por cliente
+- **D**ependency Inversion: Dependencia de abstracciones, no de concreciones
+
+### Clean Architecture
+
+- Independencia de frameworks
+- Testeable
+- Independencia de la UI
+- Independencia de la base de datos
+- Independencia de agentes externos
+
+## 🔐 Seguridad
+
+- Validación de datos con `class-validator`
+- Variables de entorno para configuración sensible
+- Preparado para implementar autenticación JWT
+- Preparado para implementar autorización basada en roles
+
+## 🧪 Testing
+
+El proyecto está configurado para testing con Jest:
+
+```bash
+# Tests unitarios
+npm run test
+
+# Tests con cobertura
+npm run test:cov
+
+# Tests end-to-end
+npm run test:e2e
+```
+
+## 📈 Próximas Funcionalidades
+
+- [ ] Módulo de Médicos
+- [ ] Módulo de Pacientes
+- [ ] Módulo de Citas
+- [ ] Módulo de Especialidades
+- [ ] Sistema de autenticación y autorización
+- [ ] Notificaciones por email
+- [ ] Dashboard de administración
+- [ ] Reportes y estadísticas
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📄 Licencia
+
+Este proyecto es privado y no tiene licencia pública.
+
+## 👥 Autor
+
+Desarrollado para la gestión eficiente de citas médicas en clínicas y hospitales.
+
+---
+
+**Nota**: Este proyecto sigue evolucionando. Para más información sobre la arquitectura y patrones utilizados, consulta la documentación en el código fuente.

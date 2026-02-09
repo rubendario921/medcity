@@ -1,11 +1,11 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, IsEmail } from "class-validator";
+import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @ApiProperty({ example: "Ruben Dario", description: "Nombre del Usuario" })
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @ApiProperty({
     example: "Carrillo Lopez",
@@ -13,25 +13,32 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  lastName: string;
+  lastName?: string;
 
   @ApiProperty({ example: "DNI", description: "Tipo de Identificacion" })
   @IsString()
   @IsNotEmpty()
-  typeDocument: string;
+  typeDocument?: string;
 
-  @ApiProperty({ example: "D1234567890", description: "Numero de Identificacion" })
+  @ApiProperty({
+    example: "D1234567890",
+    description: "Numero de Identificacion",
+  })
   @IsString()
   @IsNotEmpty()
-  numberDocument: string;
+  numberDocument?: string;
 
-  @ApiProperty({ example: "ruben.carrillo@example.com", description: "Correo Electronico" })
+  @ApiProperty({
+    example: "ruben.carrillo@example.com",
+    description: "Correo Electronico",
+  })
   @IsEmail()
   @IsNotEmpty()
-  email: string;
+  email?: string;
 
   @ApiProperty({ example: "1234567890", description: "Numero de telefono" })
   @IsString()
   @IsNotEmpty()
-  numberPhone: string;
+  numberPhone?: string;
+
 }

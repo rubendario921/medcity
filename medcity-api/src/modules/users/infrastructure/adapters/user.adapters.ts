@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmUserEntity } from '../persistence/typeorm-user.entity';
 import { User } from '../../domain/entities/user.entity';
-import { UserMappers } from '../mappers/user.mappers';
+import { UserMappers } from '../mappers/user-infrastructure.mappers';
 
 @Injectable()
 export class TypeOrmUserRepository implements IUserRepository {
